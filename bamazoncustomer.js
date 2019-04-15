@@ -22,7 +22,6 @@ const renderTable = (tableData) => {
         colWidths: [10, 20, 20, 10, 10]
     });
     for (let row of tableData) {
-        console.log(row);
         table.push(
             [row.item_id, row.product_name, row.department_name, row.price, row.stock_quantity]
         );
@@ -34,10 +33,8 @@ const renderTable = (tableData) => {
 const getDataFromDatabase = () => {
     mySqlConnection.query('SELECT * FROM products', (err, data) => {
         if (err) throw err;
-        console.log(data);
         renderTable(data);
         customerPrompt();
-
     });
 };
 
@@ -57,7 +54,7 @@ const customerPrompt = () => {
                             {
                                 name: 'quantity',
                                 message: `How many/much ${data[0].product_name} would you like?`,
-                                type: 'input'
+                                type: 'input',
                             }
                         ])
                             .then(qty => {
@@ -67,7 +64,7 @@ const customerPrompt = () => {
                                         const total = (data[0].price * qty.quantity).toFixed(2)
                                         console.log(`Your total is $${total}.`);
                                         mySqlConnection.end();
-                                    })
+                                                                        })
                                 } else {
                                     console.log(`We're sorry. We don't have enough of what you want.`);
                                     console.log(`We have only ${data[0].stock_quantity} left in stock. Please change your quantity.`)
