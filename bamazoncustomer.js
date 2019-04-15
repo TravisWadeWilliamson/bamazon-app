@@ -32,7 +32,7 @@ const renderTable = (tableData) => {
 
 //pulls the database
 const getDataFromDatabase = () => {
-    mySqlConnection.query('select * from products', (err, data) => {
+    mySqlConnection.query('SELECT * FROM products', (err, data) => {
         if (err) throw err;
         console.log(data);
         renderTable(data);
@@ -69,7 +69,8 @@ const customerPrompt = () => {
                                         mySqlConnection.end();
                                     })
                                 } else {
-                                    console.log(`We're sorry. We don't have enough of what you want.`)
+                                    console.log(`We're sorry. We don't have enough of what you want.`);
+                                    console.log(`We have only ${data[0].stock_quantity} left in stock. Please change your quantity.`)
                                     qtyPrompt();
                                 }
 
