@@ -124,3 +124,44 @@ const addToInventory = () => {
             })
         })
 }
+
+const addNewProduct = () => {
+    inquirer.prompt([
+        {
+            name: 'product_id',
+            type: 'input',
+            message: 'What is the product you would like to add to inventory?',
+        },
+    ])
+        .then(userInput => {
+            mySqlConnection.query(`SELECT * FROM products WHERE item_id =${userInput.product_id}`, (err, data) => {
+
+                const qtyPrompt = () => {
+                    inquirer.prompt([
+                        {
+                            name: 'addQuantity',
+                            message: `How many/much of ${data[0].product_name} would you like to add?`,
+                            type: 'input',
+                        }
+                    ])
+                        .then(qty => {
+                            const addQty = parseInt(qty.addQuantity);
+                            if (addQty !== 0) {
+                                console.log(addQty);
+                                //set qty plus the remaining qty
+                                mySqlConnection.query(`UPDATE products SET stock_quantity = stock_quantity + ${addQty} WHERE item_id = ${userInput.product_id}`, (err, res) => {
+                                    const total = (data[0].stock_quantity + addQty);
+                                    console.log(`Quantity of ${data[0].product_name} = ${total}.`);
+                                    queryDatabase();
+
+                                })
+                            } else {
+                                console.log(`Can't add 0 quantity. Please add a number greater than 0 to inventory.`)
+                                queryDatabase();
+                            }
+                        })
+                }
+                qtyPrompt();
+            })
+        })
+}
