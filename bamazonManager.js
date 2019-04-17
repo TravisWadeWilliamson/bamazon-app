@@ -71,7 +71,7 @@ const viewLowInventory = (tableData) => {
         colWidths: [10, 20, 20, 10, 10]
     });
     for (let row of tableData) {
-        if (row.stock_quantity < 10) {
+        if (row.stock_quantity < 6) {
 
             table.push(
                 [row.item_id, row.product_name, row.department_name, row.price, row.stock_quantity]
